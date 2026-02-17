@@ -2,21 +2,31 @@
 import Button from '@/components/Button';
 import {
   charAtom,
+  expAtom,
+  levelAtom,
   fundsAtom,
   gachaOneRollModalAtom,
   gachaTenRollModalAtom,
+  charAfterRollAtom,
 } from '@/store';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import Image from 'next/image';
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react';
-import { gacha } from '@/lib/gacha';
+import { convertDuplicates, gacha } from '@/lib/gacha';
 import { saveData } from '@/lib/data';
+import { levelManager } from '@/lib/exp';
+import { characters } from '@/const/characters';
 
 export default function Gacha() {
   const [funds, setFunds] = useAtom(fundsAtom);
   const setOneRollModalState = useSetAtom(gachaOneRollModalAtom);
   const setTenRollModalState = useSetAtom(gachaTenRollModalAtom);
   const [pulls, setPulls] = useAtom(charAtom);
+  const [lvl, addLvl] = useAtom(levelAtom);
+  const [exp, addExp] = useAtom(expAtom);
+  const [charAfterRoll, setCharAfterRoll] = useAtom(charAfterRollAtom);
+
+  const boxCost = 10;
   return (
     <div className="relative">
       <div className="flex size-full flex-col items-center justify-center gap-8 p-4">
@@ -36,39 +46,76 @@ export default function Gacha() {
           <Button
             onClick={() => {
               const newChar = gacha();
-              setPulls([...pulls, newChar]);
-              setFunds(funds - 10);
+              setCharAfterRoll([newChar]);
+              const expGained = convertDuplicates(newChar, pulls);
+              if (expGained === 0) {
+                setPulls([...pulls, newChar]);
+                localStorage.setItem(
+                  'chars',
+                  JSON.stringify([...pulls, newChar]),
+                );
+              } else {
+                levelManager({
+                  currentLvl: lvl,
+                  setLvl: addLvl,
+                  currentExp: exp,
+                  setExp: addExp,
+                  expGained: expGained,
+                });
+              }
+              setFunds(funds - boxCost);
+              saveData({ funds: funds - boxCost, chars: [...pulls, newChar] });
               setOneRollModalState(true);
-              saveData({ chars: [...pulls, newChar] });
-              localStorage.setItem(
-                'chars',
-                JSON.stringify([...pulls, newChar]),
-              );
             }}
             label="x1"
             className="min-w-20"
-            disabled={funds < 10}
+            disabled={funds < boxCost}
           />
           <Button
             onClick={() => {
+              let expGained = 0;
               const newChars = [];
+              const charsToShow = [];
               for (let i = 0; i < 10; i++) {
-                newChars.push(gacha());
+                const newChar = gacha();
+                charsToShow.push(newChar);
+                const expGainedIndiv = convertDuplicates(newChar, [
+                  ...pulls,
+                  ...newChars,
+                ]);
+                if (expGainedIndiv === 0) {
+                  newChars.push(newChar);
+                } else {
+                  expGained += expGainedIndiv;
+                }
               }
 
+              setCharAfterRoll(charsToShow);
               setPulls([...pulls, ...newChars]);
 
-              setFunds(funds - 10 * 10);
-              setTenRollModalState(true);
-              saveData({ chars: [...pulls, ...newChars] });
               localStorage.setItem(
                 'chars',
                 JSON.stringify([...pulls, ...newChars]),
               );
+
+              levelManager({
+                currentLvl: lvl,
+                setLvl: addLvl,
+                currentExp: exp,
+                setExp: addExp,
+                expGained: expGained,
+              });
+
+              setFunds(funds - 10 * boxCost);
+              saveData({
+                funds: funds - 10 * boxCost,
+                chars: [...pulls, ...newChars],
+              });
+              setTenRollModalState(true);
             }}
             label="x10"
             className="min-w-20"
-            disabled={funds < 10 * 10}
+            disabled={funds < 10 * boxCost}
           />
         </div>
       </div>

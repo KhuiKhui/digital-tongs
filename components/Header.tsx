@@ -3,6 +3,7 @@ import LinkButton from './LinkButton';
 import Figures from './Figures';
 import { deleteSession, getCurrentSession } from '@/lib/session';
 import ChooseButton from './ChooseButton';
+import LogoutButton from './LogoutButton';
 
 async function Header() {
   const user = await getCurrentSession();
@@ -14,7 +15,7 @@ async function Header() {
         <LinkButton label="Gacha" href="/gacha" />
         <LinkButton label="Home" href="/" />
         {user ? (
-          <Button onClick={deleteSession} label="Logout" />
+          <LogoutButton />
         ) : (
           <div className="flex flex-row items-center justify-center gap-2">
             <LinkButton label="Login" href="/login" />

@@ -2,27 +2,35 @@
 import prisma from './prisma';
 import { getCurrentSession } from './session';
 
-export async function saveData(data: any) {
+interface GameData {
+  level?: number;
+  exp?: number;
+  funds?: number;
+  chars?: string[];
+  chosenChar?: string;
+}
+
+export async function saveData(data: GameData) {
   const userId = await getCurrentSession();
   await prisma.user.update({
     where: {
       id: userId?.value,
     },
     data: {
-      chars: data.chars,
+      ...data,
     },
   });
 }
 
 export async function getData() {
   const userId = await getCurrentSession();
-  console.log(userId);
   const user = await prisma.user.findFirst({
     where: {
       id: userId?.value,
     },
   });
-  console.log(user);
 
-  return user?.chars;
+  if (user) {
+    return user;
+  }
 }

@@ -1,19 +1,36 @@
 'use client';
 import Button from '@/components/Button';
 import { handleLogin } from '@/lib/auth';
-import { getData, saveData } from '@/lib/data';
-import { charAtom } from '@/store';
+import { getData } from '@/lib/data';
+import {
+  charAtom,
+  chosenCharAtom,
+  expAtom,
+  fundsAtom,
+  levelAtom,
+} from '@/store';
 import { useSetAtom } from 'jotai';
 import Form from 'next/form';
 import { redirect } from 'next/navigation';
 export default function Login() {
   const setPulls = useSetAtom(charAtom);
+  const setLevel = useSetAtom(levelAtom);
+  const setExp = useSetAtom(expAtom);
+  const setFunds = useSetAtom(fundsAtom);
+  const setChosenChar = useSetAtom(chosenCharAtom);
   async function authInit(data: FormData) {
     handleLogin(data);
-    const pulls = await getData();
-    console.log(pulls);
-    setPulls(pulls!);
-    localStorage.setItem('chars', JSON.stringify(pulls));
+    const userData = await getData();
+    setPulls(userData!.chars!);
+    setLevel(userData!.level!);
+    setExp(userData!.exp!);
+    setFunds(userData!.funds!);
+    setChosenChar(userData!.chosenChar!);
+    localStorage.setItem('chars', JSON.stringify(userData?.chars));
+    localStorage.setItem('level', JSON.stringify(userData?.level));
+    localStorage.setItem('exp', JSON.stringify(userData?.exp));
+    localStorage.setItem('funds', JSON.stringify(userData?.funds));
+    localStorage.setItem('chosenChar', JSON.stringify(userData?.chosenChar));
     redirect('/');
   }
   return (

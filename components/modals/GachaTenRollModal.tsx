@@ -4,11 +4,11 @@ import Image from 'next/image';
 import Button from '../Button';
 import { cn } from '@/lib/utils';
 import { useAtom } from 'jotai';
-import { charAtom, gachaTenRollModalAtom } from '@/store';
+import { charAtom, charAfterRollAtom, gachaTenRollModalAtom } from '@/store';
 
 export default function GachaTenRollModal() {
   const [tenRollModal, setTenRollModalState] = useAtom(gachaTenRollModalAtom);
-  const [pulls, setPulls] = useAtom(charAtom);
+  const [charAfterRoll, setCharAfterRoll] = useAtom(charAfterRollAtom);
   return (
     <Panel
       className={cn('top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2', {
@@ -17,8 +17,8 @@ export default function GachaTenRollModal() {
       setVisibility={setTenRollModalState}
     >
       <div className="font-bold">Congrats!!</div>
-      <div className="grid size-full auto-rows-auto grid-cols-3 justify-center gap-4 overflow-auto p-4">
-        {pulls.slice(pulls.length - 10).map((char: string, id: number) => {
+      <div className="grid size-full auto-rows-auto grid-cols-3 items-center justify-center gap-4 overflow-auto p-4">
+        {charAfterRoll.map((char: string, id: number) => {
           return (
             <Image
               key={id}

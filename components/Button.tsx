@@ -8,7 +8,7 @@ function Button({ className, label, ...inputs }: ButtonProps) {
     <div>
       <button
         className={cn(
-          'cursor-pointer rounded-md bg-white p-4 text-black transition-colors hover:bg-gray-400 active:bg-gray-600',
+          'cursor-pointer rounded-md bg-yellow-50 p-4 text-black transition-colors hover:bg-gray-400 active:bg-gray-600',
           className,
         )}
         {...inputs}

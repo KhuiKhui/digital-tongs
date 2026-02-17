@@ -1,3 +1,4 @@
+import { saveData } from './data';
 interface LevelManagerProps {
   currentLvl: number;
   setLvl: (lvl: number) => void;
@@ -12,10 +13,15 @@ export function levelManager({
   setExp,
   expGained,
 }: LevelManagerProps) {
-  const levelUpReq = currentLvl * 10;
-  setExp(currentExp + expGained);
-  if (currentExp + expGained >= levelUpReq) {
-    setExp(currentExp + expGained - levelUpReq);
-    setLvl(currentLvl + 1);
+  let levelUpReq = currentLvl * 10;
+  let newLvl = currentLvl;
+  let newExp = currentExp + expGained;
+  while (newExp >= levelUpReq) {
+    newExp -= levelUpReq;
+    newLvl += 1;
+    levelUpReq = currentLvl * 10;
   }
+  saveData({ level: newLvl, exp: newExp });
+  setExp(newExp);
+  setLvl(newLvl);
 }

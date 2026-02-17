@@ -4,11 +4,11 @@ import Image from 'next/image';
 import Button from '../Button';
 import { cn } from '@/lib/utils';
 import { useAtom } from 'jotai';
-import { charAtom, gachaOneRollModalAtom } from '@/store';
+import { charAtom, charAfterRollAtom, gachaOneRollModalAtom } from '@/store';
 
 export default function GachaOneRollModal() {
   const [oneRollModal, setOneRollModalState] = useAtom(gachaOneRollModalAtom);
-  const [pulls, setPulls] = useAtom(charAtom);
+  const [charAfterRoll, setCharAfterRoll] = useAtom(charAfterRollAtom);
   return (
     <Panel
       className={cn('top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2', {
@@ -16,20 +16,18 @@ export default function GachaOneRollModal() {
       })}
       setVisibility={setOneRollModalState}
     >
-      <div className="font-bold">Congrats!!</div>
+      <div className="text-xl font-bold">Congrats!!</div>
       <Image
         alt="char"
         width={500}
         height={1000}
-        src={'/' + pulls[pulls.length - 1]}
+        src={'/' + charAfterRoll[0]}
         className="size-full rounded-md object-cover select-none"
       />
-      <div className="font-bold">
+      <div className="text-xl font-bold">
         You got{' '}
-        {pulls.length > 0 &&
-          pulls[pulls.length - 1]
-            .slice(0, pulls[pulls.length - 1].length - 4)
-            .toUpperCase()}
+        {charAfterRoll.length > 0 &&
+          charAfterRoll[0].slice(0, charAfterRoll[0].length - 4).toUpperCase()}
         !!
       </div>
       <Button

@@ -6,6 +6,7 @@ import Panel from '../Panel';
 import Button from '../Button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { saveData } from '@/lib/data';
 
 export default function ChooseModal() {
   const [chooseModal, setChooseModalState] = useAtom(chooseCharModalAtom);
@@ -17,7 +18,6 @@ export default function ChooseModal() {
 
   useEffect(() => {
     if (localStorage.getItem('chars')) {
-      console.log('REFRESH');
       setPulls(JSON.parse(localStorage.getItem('chars')!));
     }
   }, []);
@@ -29,30 +29,31 @@ export default function ChooseModal() {
       setVisibility={setChooseModalState}
     >
       <div className="grid size-full auto-rows-auto grid-cols-3 justify-center gap-4 overflow-auto p-4">
-        {pulls.map((char: string, id: number) => {
-          return (
-            <Image
-              key={id}
-              alt="char"
-              width={500}
-              height={1000}
-              src={'/' + char}
-              className={cn(
-                'size-60 cursor-pointer rounded-md object-cover transition-all select-none hover:rotate-3',
-                {
-                  'scale-105 border-2 border-black': chosenCharInModal === id,
-                },
-              )}
-              onClick={() => {
-                if (chosenCharInModal && chosenCharInModal === id) {
-                  setChosenCharInModal(null);
-                } else {
-                  setChosenCharInModal(id);
-                }
-              }}
-            />
-          );
-        })}
+        {pulls.length > 0 &&
+          pulls.map((char: string, id: number) => {
+            return (
+              <Image
+                key={id}
+                alt="char"
+                width={500}
+                height={1000}
+                src={'/' + char}
+                className={cn(
+                  'size-full cursor-pointer rounded-md object-cover transition-all select-none hover:rotate-3',
+                  {
+                    'scale-105 border-2 border-black': chosenCharInModal === id,
+                  },
+                )}
+                onClick={() => {
+                  if (chosenCharInModal === id) {
+                    setChosenCharInModal(null);
+                  } else {
+                    setChosenCharInModal(id);
+                  }
+                }}
+              />
+            );
+          })}
       </div>
       <div className="flex flex-row items-center justify-center gap-4">
         <Button
@@ -61,12 +62,23 @@ export default function ChooseModal() {
           onClick={() => setChooseModalState(false)}
         />
         <Button
+          className="w-full px-4 py-2 hover:bg-red-600 disabled:bg-gray-500"
+          label="Delete"
+          disabled={chosenCharInModal === null}
+          onClick={() => {
+            setPulls(() => pulls.filter((_, i) => i !== chosenCharInModal));
+            setChosenCharInModal(null);
+          }}
+        />
+        <Button
           className="w-full px-4 py-2 disabled:bg-gray-500"
           label="Choose"
           disabled={chosenCharInModal === null}
           onClick={() => {
             setChooseModalState(false);
+            setChosenCharInModal(null);
             setChosenChar(pulls[chosenCharInModal!]);
+            saveData({ chosenChar: pulls[chosenCharInModal!] });
           }}
         />
       </div>

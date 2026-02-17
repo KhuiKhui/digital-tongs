@@ -19,7 +19,7 @@ export default function Home() {
               src={'/' + chosenChar}
               className="size-full rounded-md object-cover transition-transform select-none active:scale-105 active:rotate-3"
             />
-            <div className="text-xl font-bold">
+            <div className="cursor-pointer rounded-full border-2 border-yellow-900 bg-yellow-500 px-8 py-2 text-xl font-bold transition-colors hover:bg-yellow-400">
               {chosenChar[0].toUpperCase() +
                 chosenChar.slice(1, chosenChar.length - 4)}
             </div>
