@@ -1,29 +1,24 @@
 'use client';
 import Button from '@/components/Button';
-import { charAtom, fundsAtom } from '@/store';
-import { useAtom } from 'jotai';
+import {
+  charAtom,
+  fundsAtom,
+  gachaOneRollModalAtom,
+  gachaTenRollModalAtom,
+} from '@/store';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import Image from 'next/image';
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react';
-import Panel from '@/components/Panel';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
 import { gacha } from '@/lib/gacha';
+import { saveData } from '@/lib/data';
 
 export default function Gacha() {
   const [funds, setFunds] = useAtom(fundsAtom);
-  const [hasPanel, setPanel] = useState(false);
+  const setOneRollModalState = useSetAtom(gachaOneRollModalAtom);
+  const setTenRollModalState = useSetAtom(gachaTenRollModalAtom);
   const [pulls, setPulls] = useAtom(charAtom);
   return (
     <div className="relative">
-      <Panel
-        className={cn(
-          'top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2',
-          {
-            hidden: !hasPanel,
-          },
-        )}
-        setVisibility={setPanel}
-      />
       <div className="flex size-full flex-col items-center justify-center gap-8 p-4">
         <div className="flex flex-row items-center justify-evenly gap-8">
           <ArrowBigLeft size={48} />
@@ -40,16 +35,37 @@ export default function Gacha() {
         <div className="flex w-1/2 flex-row items-center justify-between gap-4">
           <Button
             onClick={() => {
-              setPulls([...pulls, gacha()]);
+              const newChar = gacha();
+              setPulls([...pulls, newChar]);
               setFunds(funds - 10);
-              setPanel(true);
+              setOneRollModalState(true);
+              saveData({ chars: [...pulls, newChar] });
+              localStorage.setItem(
+                'chars',
+                JSON.stringify([...pulls, newChar]),
+              );
             }}
             label="x1"
             className="min-w-20"
             disabled={funds < 10}
           />
           <Button
-            onClick={() => setFunds(funds - 10 * 10)}
+            onClick={() => {
+              const newChars = [];
+              for (let i = 0; i < 10; i++) {
+                newChars.push(gacha());
+              }
+
+              setPulls([...pulls, ...newChars]);
+
+              setFunds(funds - 10 * 10);
+              setTenRollModalState(true);
+              saveData({ chars: [...pulls, ...newChars] });
+              localStorage.setItem(
+                'chars',
+                JSON.stringify([...pulls, ...newChars]),
+              );
+            }}
             label="x10"
             className="min-w-20"
             disabled={funds < 10 * 10}

@@ -1,20 +1,32 @@
 'use client';
 import Image from 'next/image';
 import { useAtom } from 'jotai';
-import { charAtom } from '@/store';
+import { charAtom, chosenCharAtom } from '@/store';
+import { useEffect } from 'react';
 
 export default function Home() {
-  const [pulls, setPulls] = useAtom(charAtom);
+  const [chosenChar, setChosenChar] = useAtom(chosenCharAtom);
+
   return (
     <div className="flex size-full flex-row items-center justify-center p-4">
-      <div className="h-2/3 w-1/4">
-        <Image
-          alt="char"
-          width={500}
-          height={1000}
-          src="/tighnari.jpg"
-          className="size-full object-cover transition-transform select-none active:scale-105 active:rotate-3"
-        />
+      <div className="flex h-2/3 w-1/4 items-center justify-center">
+        {chosenChar ? (
+          <div className="flex size-full flex-col items-center justify-center gap-6">
+            <Image
+              alt="char"
+              width={500}
+              height={1000}
+              src={'/' + chosenChar}
+              className="size-full rounded-md object-cover transition-transform select-none active:scale-105 active:rotate-3"
+            />
+            <div className="text-xl font-bold">
+              {chosenChar[0].toUpperCase() +
+                chosenChar.slice(1, chosenChar.length - 4)}
+            </div>
+          </div>
+        ) : (
+          <div>Choose a character! If you don't have any, roll!</div>
+        )}
       </div>
     </div>
   );

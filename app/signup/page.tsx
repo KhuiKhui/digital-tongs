@@ -29,14 +29,14 @@ export default function Signup() {
           name="username"
         />
         <input
-          type="text"
+          type="password"
           className="rounded-md border-2 border-black bg-white p-4 text-black outline-none"
           placeholder="Password"
           name="password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           className="rounded-md border-2 border-black bg-white p-4 text-black outline-none"
           placeholder="Confirm password"
           name="password"
