@@ -1,4 +1,15 @@
-export const characters = {
+interface Character {
+  name: string;
+  path: string;
+  moneybuff: number;
+  expbuff: number;
+  desc: string;
+  rarity: 'common' | 'rare' | 'legendary';
+}
+
+type Characters = Record<string, Character>;
+
+export const characters: Characters = {
   tighnari: {
     name: 'Tighnari',
     path: '/tighnari.jpg',
