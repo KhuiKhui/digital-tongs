@@ -7,6 +7,7 @@ import Button from '../Button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { saveData } from '@/lib/data';
+import { characters } from '@/const/characters';
 
 export default function ChooseModal() {
   const [chooseModal, setChooseModalState] = useAtom(chooseCharModalAtom);
@@ -28,30 +29,36 @@ export default function ChooseModal() {
       })}
       setVisibility={setChooseModalState}
     >
-      <div className="grid size-full auto-rows-auto grid-cols-3 justify-center gap-4 overflow-auto p-4">
+      <div className="grid size-full auto-rows-fr grid-cols-4 justify-center gap-4 overflow-auto p-4">
         {pulls.length > 0 &&
           pulls.map((char: string, id: number) => {
             return (
-              <Image
+              <div
                 key={id}
-                alt="char"
-                width={500}
-                height={1000}
-                src={'/' + char}
-                className={cn(
-                  'size-full cursor-pointer rounded-md object-cover transition-all select-none hover:rotate-3',
-                  {
-                    'scale-105 border-2 border-black': chosenCharInModal === id,
-                  },
-                )}
-                onClick={() => {
-                  if (chosenCharInModal === id) {
-                    setChosenCharInModal(null);
-                  } else {
-                    setChosenCharInModal(id);
-                  }
-                }}
-              />
+                className="flex flex-col items-center justify-center gap-1"
+              >
+                <Image
+                  alt="char"
+                  width={500}
+                  height={1000}
+                  src={characters[char].path}
+                  className={cn(
+                    'size-full cursor-pointer rounded-md object-cover transition-all select-none hover:rotate-3',
+                    {
+                      'scale-105 border-2 border-black':
+                        chosenCharInModal === id,
+                    },
+                  )}
+                  onClick={() => {
+                    if (chosenCharInModal === id) {
+                      setChosenCharInModal(null);
+                    } else {
+                      setChosenCharInModal(id);
+                    }
+                  }}
+                />
+                <div className="text-xl font-bold">{characters[char].name}</div>
+              </div>
             );
           })}
       </div>

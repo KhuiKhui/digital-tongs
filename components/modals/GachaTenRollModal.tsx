@@ -5,6 +5,7 @@ import Button from '../Button';
 import { cn } from '@/lib/utils';
 import { useAtom } from 'jotai';
 import { charAtom, charAfterRollAtom, gachaTenRollModalAtom } from '@/store';
+import { characters } from '@/const/characters';
 
 export default function GachaTenRollModal() {
   const [tenRollModal, setTenRollModalState] = useAtom(gachaTenRollModalAtom);
@@ -17,17 +18,22 @@ export default function GachaTenRollModal() {
       setVisibility={setTenRollModalState}
     >
       <div className="font-bold">Congrats!!</div>
-      <div className="grid size-full auto-rows-auto grid-cols-3 items-center justify-center gap-4 overflow-auto p-4">
+      <div className="grid size-full auto-rows-fr grid-cols-5 items-center justify-center gap-4 overflow-auto p-4">
         {charAfterRoll.map((char: string, id: number) => {
           return (
-            <Image
+            <div
               key={id}
-              alt="char"
-              width={500}
-              height={1000}
-              src={'/' + char}
-              className="size-60 cursor-pointer rounded-md object-cover transition-all select-none hover:rotate-3"
-            />
+              className="flex flex-col items-center justify-center gap-2"
+            >
+              <Image
+                alt="char"
+                width={500}
+                height={1000}
+                src={characters[char].path}
+                className="size-60 cursor-pointer rounded-md object-cover transition-all select-none hover:rotate-3"
+              />
+              <div className="text-xl font-bold">{characters[char].name}</div>
+            </div>
           );
         })}
       </div>

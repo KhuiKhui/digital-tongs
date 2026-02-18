@@ -24,6 +24,7 @@ export async function saveData(data: GameData) {
 
 export async function getData() {
   const userId = await getCurrentSession();
+  console.log(userId);
   const user = await prisma.user.findFirst({
     where: {
       id: userId?.value,

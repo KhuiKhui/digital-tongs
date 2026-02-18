@@ -5,6 +5,7 @@ import Button from '../Button';
 import { cn } from '@/lib/utils';
 import { useAtom } from 'jotai';
 import { charAtom, charAfterRollAtom, gachaOneRollModalAtom } from '@/store';
+import { characters } from '@/const/characters';
 
 export default function GachaOneRollModal() {
   const [oneRollModal, setOneRollModalState] = useAtom(gachaOneRollModalAtom);
@@ -21,13 +22,15 @@ export default function GachaOneRollModal() {
         alt="char"
         width={500}
         height={1000}
-        src={'/' + charAfterRoll[0]}
+        src={
+          charAfterRoll.length > 0
+            ? characters[charAfterRoll[0]].path
+            : '/bg.jpg'
+        }
         className="size-full rounded-md object-cover select-none"
       />
       <div className="text-xl font-bold">
-        You got{' '}
-        {charAfterRoll.length > 0 &&
-          charAfterRoll[0].slice(0, charAfterRoll[0].length - 4).toUpperCase()}
+        You got {charAfterRoll.length > 0 && characters[charAfterRoll[0]].name}
         !!
       </div>
       <Button

@@ -18,6 +18,7 @@ export const characters = {
   mei: {
     name: 'Mei',
     path: '/mei.jpg',
+    moneybuff: 1,
     expbuff: 1.2,
     desc: 'the smart and elegant student council president',
     rarity: 'common',
@@ -35,7 +36,7 @@ export const characters = {
     path: '/koga.jpg',
     moneybuff: 0.5,
     expbuff: 2,
-    desc: 'bubbly girl with an avid obsession of 90s rock',
+    desc: 'shy girl with an avid obsession of 90s rock',
     rarity: 'rare',
   },
   iroha: {
@@ -43,7 +44,7 @@ export const characters = {
     path: '/iroha.jpg',
     moneybuff: 0.5,
     expbuff: 2,
-    desc: 'bubbly girl with an avid obsession of 90s rock',
+    desc: 'overworked high school student, likes gaming and watching her idol sing',
     rarity: 'rare',
   },
   kaguya: {
@@ -51,7 +52,7 @@ export const characters = {
     path: '/kaguya.jpg',
     moneybuff: 0.5,
     expbuff: 2,
-    desc: 'bubbly girl with an avid obsession of 90s rock',
+    desc: 'from space, is 3000 years old',
     rarity: 'rare',
   },
   touko: {
@@ -59,7 +60,7 @@ export const characters = {
     path: '/touko.jpg',
     moneybuff: 0.5,
     expbuff: 2,
-    desc: 'bubbly girl with an avid obsession of 90s rock',
+    desc: 'student council president, loves to not be loved',
     rarity: 'legendary',
   },
   vivian: {
@@ -67,7 +68,7 @@ export const characters = {
     path: '/vivian.jpg',
     moneybuff: 0.5,
     expbuff: 2,
-    desc: 'bubbly girl with an avid obsession of 90s rock',
+    desc: 'genshin impact',
     rarity: 'legendary',
   },
 };
