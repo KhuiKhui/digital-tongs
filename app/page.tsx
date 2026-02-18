@@ -1,12 +1,36 @@
 'use client';
 import Image from 'next/image';
 import { useAtom } from 'jotai';
-import { charAtom, chosenCharAtom } from '@/store';
+import {
+  levelAtom,
+  expAtom,
+  charAtom,
+  chosenCharAtom,
+  fundsAtom,
+} from '@/store';
 import { characters } from '@/const/characters';
+import { useEffect } from 'react';
 
 export default function Home() {
   const [chosenChar, setChosenChar] = useAtom(chosenCharAtom);
+  const [lvl, setLvl] = useAtom(levelAtom);
+  const [exp, setExp] = useAtom(expAtom);
+  const [funds, setFunds] = useAtom(fundsAtom);
 
+  useEffect(() => {
+    if (localStorage.getItem('level')) {
+      setLvl(JSON.parse(localStorage.getItem('level')!));
+    }
+    if (localStorage.getItem('level')) {
+      setExp(JSON.parse(localStorage.getItem('exp')!));
+    }
+    if (localStorage.getItem('funds')) {
+      setFunds(JSON.parse(localStorage.getItem('funds')!));
+    }
+    if (localStorage.getItem('chosenChar')) {
+      setChosenChar(JSON.parse(localStorage.getItem('chosenChar')!));
+    }
+  }, []);
   return (
     <div className="flex size-full flex-row items-center justify-center p-4">
       <div className="flex h-[80%] w-1/4 items-center justify-center">
