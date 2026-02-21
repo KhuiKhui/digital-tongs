@@ -12,6 +12,8 @@ import {
 } from '@/store';
 import { characters } from '@/const/characters';
 import { useEffect } from 'react';
+import { litter } from '@/const/litter';
+import { levelManager } from '@/lib/exp';
 
 export default function Home() {
   const [chosenChar, setChosenChar] = useAtom(chosenCharAtom);
@@ -41,8 +43,20 @@ export default function Home() {
     };
     es.onmessage = (e) => {
       console.log(e);
-      setLabel(JSON.parse(e.data).label);
+      const litterType = JSON.parse(e.data).label;
+      const litterObj = litter[litterType];
+      setLabel(litterType);
       setLabelModal(true);
+
+      levelManager({
+        currentLvl: JSON.parse(localStorage.getItem('level')!),
+        setLvl: setLvl,
+        currentExp: JSON.parse(localStorage.getItem('exp')!),
+        setExp: setExp,
+        expGained: litterObj.exp,
+      });
+
+      setFunds((funds) => funds + litterObj.money);
     };
     return () => es.close();
   }, []);
