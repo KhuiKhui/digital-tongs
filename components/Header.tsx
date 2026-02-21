@@ -1,4 +1,3 @@
-import Button from './Button';
 import LinkButton from './LinkButton';
 import Figures from './Figures';
 import { deleteSession, getCurrentSession } from '@/lib/session';

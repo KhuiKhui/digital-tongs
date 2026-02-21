@@ -15,7 +15,7 @@ import { ArrowBigLeft, ArrowBigRight } from 'lucide-react';
 import { convertDuplicates, gacha } from '@/lib/gacha';
 import { saveData } from '@/lib/data';
 import { levelManager } from '@/lib/exp';
-import { characters } from '@/const/characters';
+import { useEffect } from 'react';
 
 export default function Gacha() {
   const [funds, setFunds] = useAtom(fundsAtom);
@@ -27,6 +27,25 @@ export default function Gacha() {
   const [charAfterRoll, setCharAfterRoll] = useAtom(charAfterRollAtom);
 
   const boxCost = 10;
+
+  useEffect(() => {
+    if (localStorage.getItem('level')) {
+      addLvl(JSON.parse(localStorage.getItem('level')!));
+    }
+    if (localStorage.getItem('exp')) {
+      addExp(JSON.parse(localStorage.getItem('exp')!));
+    }
+    if (localStorage.getItem('funds')) {
+      setFunds(JSON.parse(localStorage.getItem('funds')!));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('level', lvl + '');
+    localStorage.setItem('exp', exp + '');
+    localStorage.setItem('funds', funds + '');
+  }, [lvl, exp, funds]);
+
   return (
     <div className="relative">
       <div className="flex size-full flex-col items-center justify-center gap-8 p-4">

@@ -3,6 +3,7 @@ import { atom } from 'jotai';
 export const expAtom = atom(0);
 export const levelAtom = atom(1);
 export const fundsAtom = atom(1000);
+export const labelAtom = atom<string>('plastic');
 
 export const charAtom = atom<string[]>([]);
 export const charAfterRollAtom = atom<string[]>([]);
@@ -13,3 +14,4 @@ export const expBuffAtom = atom(1);
 export const gachaOneRollModalAtom = atom(false);
 export const gachaTenRollModalAtom = atom(false);
 export const chooseCharModalAtom = atom(false);
+export const labelModalAtom = atom(false);

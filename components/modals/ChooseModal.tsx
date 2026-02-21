@@ -1,6 +1,12 @@
 'use client';
-import { useAtom } from 'jotai';
-import { chooseCharModalAtom, charAtom, chosenCharAtom } from '@/store';
+import { useAtom, useSetAtom } from 'jotai';
+import {
+  chooseCharModalAtom,
+  charAtom,
+  chosenCharAtom,
+  expBuffAtom,
+  moneyBuffAtom,
+} from '@/store';
 import { cn } from '@/lib/utils';
 import Panel from '../Panel';
 import Button from '../Button';
@@ -16,6 +22,8 @@ export default function ChooseModal() {
     null,
   );
   const [chosenChar, setChosenChar] = useAtom(chosenCharAtom);
+  const setMoneyBuff = useSetAtom(moneyBuffAtom);
+  const setExpBuff = useSetAtom(expBuffAtom);
 
   useEffect(() => {
     if (localStorage.getItem('chars')) {
@@ -85,6 +93,9 @@ export default function ChooseModal() {
             setChooseModalState(false);
             setChosenCharInModal(null);
             setChosenChar(pulls[chosenCharInModal!]);
+            setExpBuff(characters[pulls[chosenCharInModal!]].expbuff);
+            setMoneyBuff(characters[pulls[chosenCharInModal!]].moneybuff);
+
             saveData({ chosenChar: pulls[chosenCharInModal!] });
           }}
         />

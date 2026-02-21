@@ -37,8 +37,8 @@ export const characters: Characters = {
   aya: {
     name: 'Aya',
     path: '/aya.jpg',
-    moneybuff: 0.5,
-    expbuff: 2,
+    moneybuff: 2,
+    expbuff: 0.5,
     desc: 'bubbly girl with an avid obsession of 90s rock',
     rarity: 'common',
   },
