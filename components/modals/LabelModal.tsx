@@ -22,7 +22,7 @@ export default function LabelModal() {
       setVisibility={setLabelModalState}
     >
       <div className="flex size-full flex-col items-center justify-center p-4">
-        <div className="text-2xl font-bold">
+        <div className="text-center text-2xl font-bold">
           You picked up {litterObj.name} ({litterObj.rarity})!
         </div>
         <div className="mb-4">{litterObj.desc}</div>
