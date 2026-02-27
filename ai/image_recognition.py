@@ -4,6 +4,7 @@ import requests
 import cv2
 import numpy as np
 import time
+import torch
 from threading import Timer
 
 # change MODEL_PATH where necessary
@@ -19,10 +20,16 @@ def PROMINENCE_SCORE(box, conf):
 TARGET_CLASSES = ['cardboard', 'cigarette',
                   'glass', 'metal', 'paper', 'plastic']
 
+# Prepare model
+torch.set_num_threads(2) 
+torch.backends.mkldnn.enabled = True 
+device = "cpu"
+
 model = YOLO(MODEL_PATH)
 frame_idx = 0
 disposed_log = []
 request_ready = True
+tracking_state = False
 
 # Utilities
 def set_ready():
@@ -35,10 +42,10 @@ def http_post(type):
     
     if request_ready:
         print("I AM SENDING A REQUEST!!!\n\n")
-        url = "http://10.32.23.34:3000/"
+        url = "https://digital-tongs.vercel.app/api"
         data = {"label": type}
 
-        # _ = requests.post(url, json=data)
+        _ = requests.post(url, json=data)
         request_ready = False
         
         timer = Timer(5.0, set_ready)
@@ -59,9 +66,9 @@ tracked_id = None
 tracked_class = None
 missing_frames = 0
 
-model = YOLO(MODEL_PATH)
 results = model.track(source=VIDEO_SOURCE, stream=True,
-                      conf=CONF, iou=IOU, persist=True)
+                      conf=CONF, iou=IOU, persist=True,
+                      imgsz=320, device=device)
 last_saved_name = None
 
 for r in results:
@@ -151,6 +158,7 @@ for r in results:
         cv2.putText(frame, label, (x1, y1 - 8),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
+    # ''' Remove # on deployment
     # HUD
     cv2.putText(frame, f"Frame: {frame_idx}", (10, 25),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
@@ -159,7 +167,8 @@ for r in results:
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
 
     cv2.imshow("Single Object Tracking", frame)
-
+    # '''
+    
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord("q"):
