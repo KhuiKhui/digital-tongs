@@ -56,7 +56,7 @@ export default function Gacha() {
             width={500}
             height={1000}
             src="/gacha.png"
-            className="transition-transform select-none active:scale-105 active:rotate-3"
+            className="size-96 transition-transform select-none active:scale-105 active:rotate-3"
           />
           <ArrowBigRight size={48} />
         </div>
