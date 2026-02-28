@@ -82,4 +82,12 @@ export const characters: Characters = {
     desc: 'genshin impact',
     rarity: 'legendary',
   },
+  kaveh: {
+    name: 'Kaveh',
+    path: '/kaveh.jpg',
+    moneybuff: 1.7,
+    expbuff: 1.7,
+    desc: 'the ultimate ASD student',
+    rarity: 'legendary',
+  },
 };

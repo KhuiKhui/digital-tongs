@@ -1,6 +1,6 @@
 const common = ['tighnari', 'aya', 'yuu', 'mei'];
 const rare = ['koga', 'iroha', 'kaguya'];
-const legendary = ['touko', 'vivian'];
+const legendary = ['touko', 'vivian', 'kaveh'];
 
 export function gacha() {
   const rarityFactor = Math.random();
