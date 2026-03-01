@@ -1,6 +1,6 @@
 import LinkButton from './LinkButton';
 import Figures from './Figures';
-import { deleteSession, getCurrentSession } from '@/lib/session';
+import { getCurrentSession } from '@/lib/session';
 import ChooseButton from './ChooseButton';
 import LogoutButton from './LogoutButton';
 

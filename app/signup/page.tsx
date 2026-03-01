@@ -27,6 +27,7 @@ export default function Signup() {
           className="rounded-md border-2 border-black bg-white p-4 text-black outline-none"
           placeholder="Username"
           name="username"
+          autoFocus
         />
         <input
           type="password"
