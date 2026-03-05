@@ -32,7 +32,7 @@ export default function LabelModal() {
       </div>
       <Button
         className="w-full px-4 py-2"
-        label="Confirm"
+        label="Trash is thrown!"
         onClick={() => setLabelModalState(false)}
       />
     </Panel>

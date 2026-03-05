@@ -21,9 +21,13 @@ export default function Home() {
   const [exp, setExp] = useAtom(expAtom);
   const [funds, setFunds] = useAtom(fundsAtom);
   const [label, setLabel] = useAtom(labelAtom);
-  const setLabelModal = useSetAtom(labelModalAtom);
+  const [labelModal, setLabelModal] = useAtom(labelModalAtom);
 
   useEffect(() => {
+    if (labelModal) {
+      return;
+    }
+
     if (localStorage.getItem('level')) {
       setLvl(JSON.parse(localStorage.getItem('level')!));
     }
@@ -42,7 +46,6 @@ export default function Home() {
       console.log('SSE connection established');
     };
     es.onmessage = (e) => {
-      console.log(e);
       const litterType = JSON.parse(e.data).label;
       const litterObj = litter[litterType];
       setLabel(litterType);
@@ -59,7 +62,7 @@ export default function Home() {
       setFunds((funds) => funds + litterObj.money);
     };
     return () => es.close();
-  }, []);
+  }, [labelModal]);
 
   useEffect(() => {
     localStorage.setItem('level', lvl + '');
