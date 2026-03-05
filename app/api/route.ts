@@ -20,9 +20,6 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  // if (Test()) {
-  //   return;
-  // }
   const data = await request.json();
   console.log(data);
 
