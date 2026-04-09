@@ -16,3 +16,5 @@ export const gachaOneRollModalAtom = atom(false);
 export const gachaTenRollModalAtom = atom(false);
 export const chooseCharModalAtom = atom(false);
 export const labelModalAtom = atom(false);
+
+export const isPickingLitter = atom(false);

@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import {
   levelAtom,
   expAtom,
@@ -9,6 +9,7 @@ import {
   fundsAtom,
   labelAtom,
   labelModalAtom,
+  isPickingLitter,
 } from '@/store';
 import { characters } from '@/const/characters';
 import { useEffect } from 'react';
@@ -22,9 +23,10 @@ export default function Home() {
   const [funds, setFunds] = useAtom(fundsAtom);
   const [label, setLabel] = useAtom(labelAtom);
   const [labelModal, setLabelModal] = useAtom(labelModalAtom);
+  const isPick = useAtomValue(isPickingLitter);
 
   useEffect(() => {
-    if (labelModal) {
+    if (labelModal || isPick) {
       return;
     }
 
