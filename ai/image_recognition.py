@@ -214,4 +214,10 @@ for r in results:
         missing_frames = 0
 
 print(detection_count)
+
+total = 0
+for key, value in detection_count.items():
+    total += value
+
+print(f"{round(detection_count["plastic"] * 100 / total, 2)}%")
 cv2.destroyAllWindows()
