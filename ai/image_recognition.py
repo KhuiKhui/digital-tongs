@@ -26,6 +26,7 @@ detection_count = {
     "metal": 0,
     "paper": 0,
     "plastic": 0,
+    "none": 0,
 }
 
 # Prepare model
@@ -44,21 +45,6 @@ tracking_state = False
 def set_ready():
     global request_ready
     request_ready = True
-
-
-# def http_post(type):
-#     global request_ready
-#
-#     if request_ready:
-#         print("I AM SENDING A REQUEST!!!\n\n")
-#         url = "https://digital-tongs.vercel.app/api"
-#         data = {"label": type}
-#
-#         _ = requests.post(url, json=data)
-#         request_ready = False
-#
-#         timer = Timer(5.0, set_ready)
-#         timer.start()
 
 
 def to_numpy(x):
@@ -157,6 +143,9 @@ for r in results:
             missing_frames = 0
 
             # http_post(last_saved_name)
+
+    if len(detections) == 0:
+        detection_count["none"] += 1
 
     for d in detections:
         x1, y1, x2, y2 = map(int, d["bbox"])
