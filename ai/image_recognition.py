@@ -29,6 +29,28 @@ detection_count = {
     "none": 0,
 }
 
+
+def get_brightness_and_noise(frame):
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    brightness = cv2.mean(gray)[0]
+    kernel = np.array(
+        [
+            [1, -2, 1],
+            [-2, 4, -2],
+            [1, -2, 1],
+        ],
+        dtype=np.float32,
+    )
+    immerkaer = cv2.filter2D(
+        frame, ddepth=cv2.CV_32F, kernel=kernel, borderType=cv2.BORDER_REFLECT
+    )
+
+    inner = immerkaer[1:-1, 1:-1]
+    noise = np.sqrt(np.pi / 2.0) * np.mean(np.abs(inner)) / 6.0
+    return brightness, noise
+
+
 # Prepare model
 torch.set_num_threads(2)
 torch.backends.mkldnn.enabled = True
@@ -71,8 +93,12 @@ results = model.track(
     device=device,
 )
 last_saved_name = None
+average_brightness = 0
+average_noise = 0
 
 for r in results:
+    if frame_idx >= 100:
+        break
     frame_idx += 1
     frame = r.orig_img.copy()
     detections = []
@@ -147,6 +173,10 @@ for r in results:
     if len(detections) == 0:
         detection_count["none"] += 1
 
+    cur_brightness, cur_noise = get_brightness_and_noise(frame)
+    print(cur_noise)
+    average_brightness += cur_brightness
+    average_noise += cur_noise
     for d in detections:
         x1, y1, x2, y2 = map(int, d["bbox"])
 
@@ -208,5 +238,7 @@ total = 0
 for key, value in detection_count.items():
     total += value
 
-print(f"{round(detection_count["plastic"] * 100 / total, 2)}%")
+print("success_rate:", round(detection_count["plastic"] / total, 2))
+print("average_brightness:", round(average_brightness / 100 / 255, 2))
+print("average_noise:", round(average_noise / 100, 2))
 cv2.destroyAllWindows()
