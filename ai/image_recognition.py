@@ -174,7 +174,7 @@ for r in results:
         detection_count["none"] += 1
 
     cur_brightness, cur_noise = get_brightness_and_noise(frame)
-    print(cur_noise)
+    print(cur_brightness)
     average_brightness += cur_brightness
     average_noise += cur_noise
     for d in detections:
@@ -238,7 +238,7 @@ total = 0
 for key, value in detection_count.items():
     total += value
 
-print("success_rate:", round(detection_count["plastic"] / total, 2))
 print("average_brightness:", round(average_brightness / 100 / 255, 2))
 print("average_noise:", round(average_noise / 100, 2))
+print("success_rate:", round(detection_count["plastic"] / total, 2))
 cv2.destroyAllWindows()
