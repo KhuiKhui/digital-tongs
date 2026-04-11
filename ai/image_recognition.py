@@ -174,7 +174,6 @@ for r in results:
         detection_count["none"] += 1
 
     cur_brightness, cur_noise = get_brightness_and_noise(frame)
-    print(cur_brightness)
     average_brightness += cur_brightness
     average_noise += cur_noise
     for d in detections:
@@ -184,11 +183,11 @@ for r in results:
             color = (0, 255, 0)  # tracked = green
             thickness = 3
             label = f"TRACKED: {d['cls_name']} ID:{d['track_id']}"
+            detection_count[d["cls_name"]] += 1
         else:
             color = (200, 200, 200)
             thickness = 1
             label = f"{d['cls_name']} ID:{d['track_id']}"
-        detection_count[d["cls_name"]] += 1
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, thickness)
         cv2.putText(frame, label, (x1, y1 - 8), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
